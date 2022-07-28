@@ -1,0 +1,59 @@
+version: '3'
+services:
+  app:
+    container_name: app-server
+    image: nextcloud:fpm
+    restart: always
+    expose:
+      - '80'
+      - '9000'
+    volumes:
+      - ./data/app_data:/var/www/html
+  onlyoffice-document-server:
+    container_name: onlyoffice-document-server
+    image: onlyoffice/documentserver:latest
+    restart: always
+    expose:
+      - '80'
+      - '443'
+    volumes:
+      - ./data/document_data:/var/www/onlyoffice/Data
+      - ./data/document_log:/var/log/onlyoffice
+  nginx:
+    container_name: nginx-server
+    image: nginx
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx_http.conf:/etc/nginx/nginx_http.conf
+      - ./data/app_data:/var/www/html
+      - ./data/certbot/conf:/etc/letsencrypt      
+  certbot:
+    container_name: certbot-server
+    image: certbot/certbot
+    depends_on:
+      - nginx
+    volumes:
+      - ./data/app_data:/var/www/html
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/logs:/var/log/letsencrypt
+    command: certonly --webroot --webroot-path=/var/www/html --email kaisarhan@mail.ru --agree-tos --no-eff-email -d nc.skk.kz
+  db:
+    image: postgres:alpine
+    restart: always
+    container_name: db
+    ports:
+     - 5432:5432
+    environment:
+     - POSTGRES_PASSWORD=Nazi502294
+     - POSTGRES_DB=nextcloud
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+volumes:
+  document_data:
+  document_log:
+  app_data:
+  postgresql:
