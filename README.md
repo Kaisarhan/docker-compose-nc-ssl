@@ -139,7 +139,28 @@
 **Nginx***
 
 * В директорий /nginx/nginx.conf нужно коректировать под свой домен
+    ```
+   server {
+        listen 80;
+        server_name you_domain.kz;
 
+       location ~ /.well-known/acme-challenge {
+            allow all;
+            root /var/www/html;
+        }
+
+        include /etc/nginx/nginx_http.conf;
+    }
+    server {
+       listen 443 ssl http2;
+       ssl_certificate /etc/letsencrypt/live/you_domain.kz/fullchain.pem;
+       ssl_certificate_key /etc/letsencrypt/live/you_domain.kz/privkey.pem;
+       ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
+       ssl_ciphers  "HIGH:!RC4:!aNULL:!MD5:!kEDH";
+
+        include /etc/nginx/nginx_http.conf;
+    }
+    ```
 ## Все команды каторый возможно помогут вам.
 
 **Docker-compose**
