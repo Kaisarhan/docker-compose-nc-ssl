@@ -40,7 +40,7 @@ services:
       - ./data/app_data:/var/www/html
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/logs:/var/log/letsencrypt
-    command: certonly --webroot --webroot-path=/var/www/html --email kaisarhan@mail.ru --agree-tos --no-eff-email -d nc.skk.kz
+    command: certonly --webroot --webroot-path=/var/www/html --email you_mail@mail.kz --agree-tos --no-eff-email -d you_domain.kz
   db:
     image: postgres:alpine
     restart: always
@@ -48,7 +48,7 @@ services:
     ports:
      - 5432:5432
     environment:
-     - POSTGRES_PASSWORD=Nazi502294
+     - POSTGRES_PASSWORD=*********
      - POSTGRES_DB=nextcloud
     volumes:
       - postgresql:/var/lib/postgresql/data
