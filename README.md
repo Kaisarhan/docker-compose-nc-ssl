@@ -39,7 +39,7 @@
 4. Что бы подтянуть файлы на нашу станцию введите следующие команды:
 
     ```
-    git clone https://github.com/Kaisarhan/docker-compose-nextcloud
+    git clone https://github.com/Kaisarhan/docker-compose-nc-ssl
     ```
 
 5. Run Docker Compose:
