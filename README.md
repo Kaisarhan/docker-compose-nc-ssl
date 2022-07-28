@@ -132,6 +132,9 @@
 
 
 ## SSL Certbot.
+**Docker-compose**
+
+* Укажите свой данные для Certbot в  command: you_mail, you_domain
 
 
 ## Все команды каторый возможно помогут вам.
