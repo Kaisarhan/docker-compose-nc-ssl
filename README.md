@@ -134,8 +134,11 @@
 ## SSL Certbot.
 **Docker-compose**
 
-* Укажите свой данные для Certbot в  command: you_mail, you_domain
+* Укажите свой данные для Certbot в command: you_mail, you_domain. Детальную информацию можете найти в интернете 
 
+**Nginx***
+
+* В директорий /nginx/nginx.conf нужно коректировать под свой домен
 
 ## Все команды каторый возможно помогут вам.
 
