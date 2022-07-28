@@ -136,21 +136,23 @@
 
 * Укажите свой данные для Certbot в command: you_mail, you_domain. Детальную информацию можете найти в интернете 
 
-**Nginx***
+```
+certbot:
+    container_name: certbot-server
+    image: certbot/certbot
+    depends_on:
+      - nginx
+    volumes:
+      - ./data/app_data:/var/www/html
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/logs:/var/log/letsencrypt
+    command: certonly --webroot --webroot-path=/var/www/html --email you_mail@mail.kz --agree-tos --no-eff-email -d you_domain.kz
+```
 
-* В директорий /nginx/nginx.conf нужно коректировать под свой домен
+**Nginx**
+
+* После запуска docker-compose нужно будет редактировать __nginx.conf__ в директорий __/nginx/nginx.conf__ нужно нужно добавить SERVER и коректировать под свой домен
     ```
-   server {
-        listen 80;
-        server_name you_domain.kz;
-
-       location ~ /.well-known/acme-challenge {
-            allow all;
-            root /var/www/html;
-        }
-
-        include /etc/nginx/nginx_http.conf;
-    }
     server {
        listen 443 ssl http2;
        ssl_certificate /etc/letsencrypt/live/you_domain.kz/fullchain.pem;
@@ -161,6 +163,61 @@
         include /etc/nginx/nginx_http.conf;
     }
     ```
+    
+**NextCloud**
+
+* Корректируем конфигурацию NextCloud для перехода на протокол https по директорий __data/app_data/config/config.php__ 
+  самое главное добавить __'overwriteprotocol' => 'https'__
+```php
+   <?php
+$CONFIG = array (
+  'overwritehost' => 'you_domain.kz',
+  'defaultapp' => 'files',
+  'overwriteprotocol' => 'https',
+  'memcache.local' => '\\OC\\Memcache\\APCu',
+  'apps_paths' =>
+  array (
+    0 =>
+    array (
+      'path' => '/var/www/html/apps',
+      'url' => '/apps',
+      'writable' => false,
+    ),
+    1 =>
+    array (
+      'path' => '/var/www/html/custom_apps',
+      'url' => '/custom_apps',
+      'writable' => true,
+    ),
+  ),
+  'instanceid' => 'ocxknj5xyfpj',
+  'passwordsalt' => 'iEdwMfNLHFyRHO5Bk1Axcbtasdqwezxcv',
+  'secret' => '9ACC3fdeF1xvXsHwJOJXEAgpUvCm+jy6loFs7rmJzxcvasfkgnjswiughj4qRGbit',
+  'trusted_domains' =>
+  array (
+    0 => '192.168.1.225',   <---- тут ваш ip в локальной сети 
+    1 => 'you_domain.kz',
+  ),
+  'datadirectory' => '/var/www/html/data',
+  'dbtype' => 'pgsql',
+  'version' => '24.0.1.1',
+  'overwrite.cli.url' => 'http://192.168.1.225',    <---- тут ваш ip в локальной сети 
+  'dbname' => 'nextcloud',
+  'dbhost' => 'db',
+  'dbport' => '',
+  'dbtableprefix' => 'oc_',
+  'dbuser' => 'oc_admin',
+  'dbpassword' => 'cxIWB3rlvi1dohwFHfssGv2p85LqweqweasmjiughLYSamwerijn',
+  'installed' => true,
+  'onlyoffice' =>
+  array (
+    'DocumentServerUrl' => '/ds-vpath/',
+    'DocumentServerInternalUrl' => 'http://onlyoffice-document-server/',
+    'StorageUrl' => 'http://nginx-server/',
+  ),
+  'allow_local_remote_servers' => 'true',
+);
+```    
 ## Все команды каторый возможно помогут вам.
 
 **Docker-compose**
