@@ -6,7 +6,7 @@
 2) OnlyOffice
 3) Nginx
 4) PostgreSQL
-5) pgAdmin
+5) Certbot
 
 
 
