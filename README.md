@@ -151,7 +151,7 @@ certbot:
 
 **Nginx**
 
-* После запуска docker-compose нужно будет редактировать __nginx.conf__ в директорий __/nginx/nginx.conf__ нужно нужно добавить SERVER и коректировать под свой домен
+* После запуска docker-compose нужно будет редактировать __nginx.conf__ в директорий __/nginx/nginx.conf__ нужно добавить SERVER и коректировать под свой домен
     ```
     server {
        listen 443 ssl http2;
