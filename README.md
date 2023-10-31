@@ -282,3 +282,15 @@ $CONFIG = array (
     cat your-dump-name_`date +%d-%m-%Y`.sql | docker exec -i container_name psql -U postgres
     ```
     
+**CertBot:**
+
+* Перевыпуск ssl сертификатов
+    
+    ```
+    docker-compose run certbot renew --dry-run
+    ```
+* Рестартануть nginx после выпуска сертефикатов
+    
+    ```
+    docker-compose restart nginx
+    ```
